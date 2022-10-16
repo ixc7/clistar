@@ -4,18 +4,19 @@ import pkg from 'circular-natal-horoscope-js'
 const { Origin, Horoscope } = pkg
 import { locations, months } from './locations.js'
 
+const rep = (n, char = ' ') => char.repeat(n)
+
 const input = process.argv.slice(2)
 if (input.length < 3) {
   console.log('usage: clistar [MM] [DD] [YYYY]')
   process.exit(0)
 }
 
-const { lattitude, longitude } = locations.philadelphia
+const birthPlace = 'seattle'
+const { lattitude, longitude } = locations[birthPlace]
 
-// TODO validate input here
 const DOB = {
-  // 0=Jan, 11=Dec
-  month: input[0] - 1,
+  month: input[0] - 1, // 0=Jan, 11=Dec
   date: input[1],
   year: input[2]
 }
@@ -44,6 +45,7 @@ const results = horoscope._celestialBodies.all.map(({
   if (label.length > space.planet) space.planet = label.length
   if (Sign.label.length > space.sign) space.sign = Sign.label.length
   if (House.label.length > space.house) space.house = House.label.length
+
   return {
     planet: label,
     sign: Sign.label,
@@ -51,9 +53,8 @@ const results = horoscope._celestialBodies.all.map(({
   }
 })
 
-const rep = (n, char = ' ') => char.repeat(n)
-
-const header = `${months[DOB.month]} ${DOB.date}, ${DOB.year}`
+const allTags = []
+const header = `${months[DOB.month]} ${DOB.date}, ${DOB.year} - ${birthPlace}`
 const xLen = space.planet + space.sign + space.house + 10
 const xPad = (xLen - (header.length)) / 2
 const xRow = rep(xLen, '~')
@@ -78,8 +79,13 @@ results.forEach(i => {
     `| \x1b[1m${i.sign}\x1b[0m${pad('sign')} ` +
     `| ${i.planet}${pad('planet')} ` +
     `| ${i.house}${pad('house')} |` +
+    ` #${i.sign}${i.planet}${pad('sign')}${pad('planet')}` +
     '\n'
   )
+  allTags.push(` #${i.sign}${i.planet}`)
 })
 
 process.stdout.write(xRow + '\n\n')
+
+allTags.forEach(i => process.stdout.write(i))
+process.stdout.write('\n\n')
