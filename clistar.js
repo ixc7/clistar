@@ -7,12 +7,18 @@ import { locations, months } from './locations.js'
 const rep = (n, char = ' ') => char.repeat(n)
 
 const input = process.argv.slice(2)
-if (input.length < 3) {
-  console.log('usage: clistar [MM] [DD] [YYYY]')
+
+if (input.includes('--list') || input.includes('-ls')) {
+  console.log(Object.keys(locations).join('\n'))
   process.exit(0)
 }
 
-const birthPlace = 'seattle'
+if (input.length < 4) {
+  console.log('usage: clistar [MM] [DD] [YYYY] [Location]')
+  process.exit(0)
+}
+
+const birthPlace = input[3]
 const { lattitude, longitude } = locations[birthPlace]
 
 const DOB = {

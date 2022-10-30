@@ -44,6 +44,10 @@ export const locations = {
     lattitude: 34.0522,
     longitude: 118.2437
   },
+  louisville: {
+    longitude: 38.1887214,
+    lattitude: -85.8171966
+  },
   milwaukee: {
     lattitude: 43.038902,
     longitude: -87.906471
