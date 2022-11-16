@@ -1,5 +1,3 @@
 # clistar
 
-===
-
 astrology tool
