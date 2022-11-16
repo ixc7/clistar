@@ -2,28 +2,20 @@
 
 import pkg from 'circular-natal-horoscope-js'
 const { Origin, Horoscope } = pkg
-// import { locations, months } from './locations.js'
 import { getLatLon } from './positionStack.js'
+
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'september', 'October', 'November', 'December']
 
 const rep = (n, char = ' ') => char.repeat(n)
 
 const input = process.argv.slice(2)
-
-// if (input.includes('--list') || input.includes('-ls')) {
-  // console.log(Object.keys(locations).join('\n'))
-  // process.exit(0)
-// }
 
 if (input.length < 4) {
   console.log('usage: clistar [MM] [DD] [YYYY] [Location]')
   process.exit(0)
 }
 
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'september', 'October', 'November', 'December']
-
-// const birthPlace = input[3]
 const birthPlace = input.slice(3).join(' ')
-// const { latitude, longitude } = locations[birthPlace]
 const { latitude, longitude, name } = await getLatLon(birthPlace)
 
 const DOB = {
@@ -64,7 +56,6 @@ const results = horoscope._celestialBodies.all.map(({
   }
 })
 
-// const allTags = []
 const header = `${months[DOB.month]} ${DOB.date}, ${DOB.year} - ${name}`
 const xLen = space.planet + space.sign + space.house + 10
 const xPad = (xLen - (header.length)) / 2
@@ -75,10 +66,8 @@ const pP = rep(space.planet - 'planet'.length)
 const sP = rep(space.sign - 'sign'.length)
 const hP = rep(space.house - 'house'.length)
 
-// process.stdout.write(`
-// console.log(`
-// \x1Bc\x1b[3J
 console.clear()
+
 console.log(`${xRow}
 |${lP}\x1b[1m${header}\x1b[0m${rP}|
 ${xRow}
@@ -87,24 +76,12 @@ ${xRow}`)
 
 results.forEach(i => {
   const pad = k => rep(space[k] - i[k].length)
-  // process.stdout.write(
   console.log(
     `| \x1b[1m${i.sign}\x1b[0m${pad('sign')} ` +
     `| ${i.planet}${pad('planet')} ` +
     `| ${i.house}${pad('house')} |` +
     ` #${i.sign}${i.planet}${pad('sign')}${pad('planet')}`
-    // ` #${i.sign}${i.planet}${pad('sign')}${pad('planet')}` +
-    // '\n'
   )
-  // allTags.push(` #${i.sign}${i.planet}`)
 })
 
-// process.stdout.write(xRow + '\n\n')
-// console.log(xRow + '\n\n')
-// console.log(xRow + '\n')
 console.log(xRow)
-
-// allTags.forEach(i => process.stdout.write(i))
-// allTags.forEach(i => console.log(i))
-// process.stdout.write('\n\n')
-// console.log('\n\n')
