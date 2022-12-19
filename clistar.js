@@ -23,14 +23,10 @@ if (input.length < 4) {
 }
 
 const birthPlace = input.slice(3).join(' ')
-
 const { latitude, longitude, name } = await getLatLon(birthPlace)
-
-// const DOB = {
 const  month = input[0] - 1 // 0=Jan, 11=Dec
 const  date = input[1]
 const year = input[2]
-// }
 
 const results = new Horoscope({
   origin: new Origin({
@@ -48,7 +44,7 @@ const results = new Horoscope({
   if (label.length > space.planet) space.planet = label.length
   if (Sign.label.length > space.sign) space.sign = Sign.label.length
   if (House.label.length > space.house) space.house = House.label.length
-    
+
   return {
     planet: label,
     sign: Sign.label,
@@ -59,9 +55,9 @@ const results = new Horoscope({
 const header = `${months[month]} ${date}, ${year} - ${name}`
 const xLen = space.planet + space.sign + space.house + 10
 const xPad = (xLen - (header.length)) / 2
-const xRowMid = '┣' + rep(xLen - 2, xChar) + '┫' 
-const xRowDown = '┏' + rep(xLen - 2, xChar) + '┓' 
-const xRowUp = '┗' + rep(xLen - 2, xChar) + '┛' 
+const xRowMid = '┣' + rep(xLen - 2, xChar) + '┫'
+const xRowDown = '┏' + rep(xLen - 2, xChar) + '┓'
+const xRowUp = '┗' + rep(xLen - 2, xChar) + '┛'
 const lP = rep(Math.ceil(xPad) - 1)
 const rP = rep(Math.floor(xPad) - 1)
 const pP = rep(space.planet - 'planet'.length)
@@ -69,7 +65,6 @@ const sP = rep(space.sign - 'sign'.length)
 const hP = rep(space.house - 'house'.length)
 
 console.clear()
-
 console.log(`${xRowDown}
 ${yChar}${lP}\x1b[1m${header}\x1b[0m${rP}${yChar}
 ${xRowMid}
