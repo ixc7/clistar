@@ -1,5 +1,6 @@
 apiKey.js
 node_modules/
 pnpm-lock.yaml
+bun.lockb
 notes*
 etc/
