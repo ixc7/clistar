@@ -5,9 +5,12 @@ import { getLatLon } from './positionStack.js'
 
 const rep = (n, char = ' ') => char.repeat(n)
 
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'september', 'October', 'November', 'December']
-const yChar = '┃'
-const xChar = '━'
+const input = process.argv.slice(2)
+
+if (input.length < 4) {
+  console.log('usage: clistar [MM] [DD] [YYYY] [Location]')
+  process.exit(1)
+}
 
 let space = {
   planet: 0,
@@ -15,18 +18,11 @@ let space = {
   house: 0
 }
 
-const input = process.argv.slice(2)
-
-if (input.length < 4) {
-  console.log('usage: clistar [MM] [DD] [YYYY] [Location]')
-  process.exit(0)
-}
-
+const month = input[0] - 1 // 0=Jan, 11=Dec
+const date = input[1]
+const year = input[2]
 const birthPlace = input.slice(3).join(' ')
 const { latitude, longitude, name } = await getLatLon(birthPlace)
-const  month = input[0] - 1 // 0=Jan, 11=Dec
-const  date = input[1]
-const year = input[2]
 
 const results = new Horoscope({
   origin: new Origin({
@@ -51,7 +47,9 @@ const results = new Horoscope({
     house: House.label
   }
 })
-
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'september', 'October', 'November', 'December']
+const yChar = '┃'
+const xChar = '━'
 const header = `${months[month]} ${date}, ${year} - ${name}`
 const xLen = space.planet + space.sign + space.house + 10
 const xPad = (xLen - (header.length)) / 2
@@ -73,6 +71,7 @@ ${xRowMid}`)
 
 results.forEach(i => {
   const pad = k => rep(space[k] - i[k].length)
+
   console.log(
     `${yChar} \x1b[1m${i.sign}\x1b[0m${pad('sign')} ` +
     `${yChar} ${i.planet}${pad('planet')} ` +
